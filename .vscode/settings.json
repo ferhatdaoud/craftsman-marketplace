@@ -1,0 +1,30 @@
+{
+  "cSpell.words": ["superadmin"],
+  "restoreTerminals.runOnStartup": true,
+  "restoreTerminals.keepExistingTerminalsOpen": false,
+  "restoreTerminals.terminals": [
+    {
+      "splitTerminals": [
+        {
+          "name": "Server",
+          "commands": ["cd server", "npm run dev"],
+          "shouldRunCommands": true
+        },
+        {
+          "name": "Client",
+          "commands": ["cd client", "npm run dev"],
+          "shouldRunCommands": true
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "GitHub",
+          "commands": ["git status"],
+          "shouldRunCommands": true
+        }
+      ]
+    }
+  ]
+}
