@@ -11,13 +11,15 @@ interface RegisterFormData {
 }
 
 export default function App() {
-  // 2. React state typed to our interface
   const [formData, setFormData] = useState<RegisterFormData>({
     name: "",
     email: "",
     password: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -26,9 +28,28 @@ export default function App() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In Milestone 02, this is where we send the data to our Express API!
+    setIsLoading(true);
+    setMessage("");
+    setIsError(false);
+    try {
+      const res = await fetch("http://localhost:3000/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to create account");
+      }
+      setMessage("Account created successfully! You can now log in.");
+    } catch (err: any) {
+      setIsError(true);
+      setMessage(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
